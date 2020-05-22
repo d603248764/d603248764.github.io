@@ -8,16 +8,16 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>js的封装 | 戴子文的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="面向对象的三大特性：封装、继承、多态但是javascript是一门弱语言，根本不需要多态这么个概念。开始了！开始了！ 封装概念：把一个客观的事物封装成抽象的类，对外暴露接口，隐藏属性和方法。 在es6之前，js是通过构造函数来进行封装的。es6之后？别急！ es6之前的封装先贴张图回忆回忆。(上图最好有根.constructor由prototype指向构造函数的实线) 私有属性和方法、公有属性和方">
+  <meta name="description" content="面向对象的三大特性：封装、继承、多态但是javascript是一门弱语言，根本不需要多态这么个概念。开始了！开始了！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js的封装">
 <meta property="og:url" content="http://yoursite.com/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/index.html">
 <meta property="og:site_name" content="戴子文的博客">
-<meta property="og:description" content="面向对象的三大特性：封装、继承、多态但是javascript是一门弱语言，根本不需要多态这么个概念。开始了！开始了！ 封装概念：把一个客观的事物封装成抽象的类，对外暴露接口，隐藏属性和方法。 在es6之前，js是通过构造函数来进行封装的。es6之后？别急！ es6之前的封装先贴张图回忆回忆。(上图最好有根.constructor由prototype指向构造函数的实线) 私有属性和方法、公有属性和方">
+<meta property="og:description" content="面向对象的三大特性：封装、继承、多态但是javascript是一门弱语言，根本不需要多态这么个概念。开始了！开始了！">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590130489674&di=54dfb30621d6ac7bc5c6f4500b4f1654&imgtype=0&src=http%253A%252F%252Fimgzx.etuan.com%252Fupload%252F8104%252F3%252F16787%252F16787_3.png">
 <meta property="article:published_time" content="2020-05-22T03:53:19.000Z">
-<meta property="article:modified_time" content="2020-05-22T05:11:21.702Z">
+<meta property="article:modified_time" content="2020-05-22T06:08:46.520Z">
 <meta property="article:tag" content="“前端，js，vue，webpack，http，数据结构与算法”">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590130489674&di=54dfb30621d6ac7bc5c6f4500b4f1654&imgtype=0&src=http%253A%252F%252Fimgzx.etuan.com%252Fupload%252F8104%252F3%252F16787%252F16787_3.png">
@@ -63,7 +63,7 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+				<li><a href="/">随笔</a></li>
 	        
 			</ul>
 		</nav>
@@ -73,8 +73,6 @@
     			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
     			
             
-    			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
     			
             
     			
@@ -86,12 +84,6 @@
 			<div class="social">
 				
 					<a class="github" target="_blank" href="https://github.com/d603248764/d603248764.github.io" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
-		        
-					<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
-		        
-					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
 		        
 			</div>
 		</nav>
@@ -130,12 +122,6 @@
 					
 						<a class="github" target="_blank" href="https://github.com/d603248764/d603248764.github.io" title="github"><i class="icon-github"></i></a>
 			        
-						<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
-			        
-						<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
-			        
-						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
-			        
 				</div>
 			</nav>
 
@@ -145,7 +131,7 @@
 				
 					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 50%"><a href="/">随笔</a></li>
 		        
 				</ul>
 			</nav>
@@ -181,6 +167,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>面向对象的三大特性：封装、继承、多态<br>但是javascript是一门弱语言，根本不需要多态这么个概念。<br>开始了！开始了！</p>
+<a id="more"></a>
+
 <h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p><strong>概念</strong>：把一个客观的事物封装成抽象的类，对外暴露接口，隐藏属性和方法。</p>
 <p>在es6之前，js是通过构造函数来进行封装的。<br>es6之后？别急！</p>
 <h2 id="es6之前的封装"><a href="#es6之前的封装" class="headerlink" title="es6之前的封装"></a>es6之前的封装</h2><p>先贴张图回忆回忆。<br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590130489674&di=54dfb30621d6ac7bc5c6f4500b4f1654&imgtype=0&src=http%3A%2F%2Fimgzx.etuan.com%2Fupload%2F8104%2F3%2F16787%2F16787_3.png" alt="原型链"><br>(上图最好有根.constructor由prototype指向构造函数的实线)</p>
@@ -222,27 +210,6 @@
 
       
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -353,6 +320,15 @@
   
 
 
+
+
+   
+
+
+
+
+
+
           </div>
         </div>
       </div>
@@ -401,8 +377,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
     
       
-      
-      
     
       
       
@@ -414,15 +388,13 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
-      
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
@@ -485,38 +457,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     	</section>
     
 
-    
-    	<section class="tools-section tools-section-friends" q-show="friends">
-  		
-        <ul class="search-ul">
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
-            </li>
-          
-        </ul>
-  		
-    	</section>
     
 
     

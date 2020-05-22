@@ -59,7 +59,7 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+				<li><a href="/">随笔</a></li>
 	        
 			</ul>
 		</nav>
@@ -69,8 +69,6 @@
     			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
     			
             
-    			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
     			
             
     			
@@ -82,12 +80,6 @@
 			<div class="social">
 				
 					<a class="github" target="_blank" href="https://github.com/d603248764/d603248764.github.io" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
-		        
-					<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
-		        
-					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
 		        
 			</div>
 		</nav>
@@ -126,12 +118,6 @@
 					
 						<a class="github" target="_blank" href="https://github.com/d603248764/d603248764.github.io" title="github"><i class="icon-github"></i></a>
 			        
-						<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
-			        
-						<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
-			        
-						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
-			        
 				</div>
 			</nav>
 
@@ -141,7 +127,7 @@
 				
 					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
+					<li style="width: 50%"><a href="/">随笔</a></li>
 		        
 				</ul>
 			</nav>
@@ -179,45 +165,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>面向对象的三大特性：封装、继承、多态<br>但是javascript是一门弱语言，根本不需要多态这么个概念。<br>开始了！开始了！</p>
-<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p><strong>概念</strong>：把一个客观的事物封装成抽象的类，对外暴露接口，隐藏属性和方法。</p>
-<p>在es6之前，js是通过构造函数来进行封装的。<br>es6之后？别急！</p>
-<h2 id="es6之前的封装"><a href="#es6之前的封装" class="headerlink" title="es6之前的封装"></a>es6之前的封装</h2><p>先贴张图回忆回忆。<br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590130489674&di=54dfb30621d6ac7bc5c6f4500b4f1654&imgtype=0&src=http%3A%2F%2Fimgzx.etuan.com%2Fupload%2F8104%2F3%2F16787%2F16787_3.png" alt="原型链"><br>(上图最好有根.constructor由prototype指向构造函数的实线)</p>
-<p><strong>私有属性和方法、公有属性和方法、静态属性和方法</strong><br>私有属性和方法：通过在构造函数中用var来声明的属性和方法，它是不能被外部使用的。<br>公有属性和方法：构造函数中用this设置的属性和方法都是公有的，另外构造函数原型对象上定义的属性和方法也是（Person.prototype.XXX）。<br>静态属性和方法：直接定义在构造函数上的。</p>
-<p><em>举个栗子：</em> </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> work=<span class="string">"攻城狮"</span>;</span><br><span class="line">	<span class="keyword">var</span> tellYourWork=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"你的工作是："</span>+work);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.aboutMe=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"hi!"</span>);</span><br><span class="line">        tellYourWork();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.name=<span class="string">'贾克斯'</span>;</span><br><span class="line"><span class="keyword">var</span> person=<span class="keyword">new</span> Person();</span><br><span class="line"><span class="built_in">console</span>.log(person.name);</span><br><span class="line">person.aboutMe();</span><br><span class="line">person.tellYourWork();</span><br></pre></td></tr></table></figure>
-<p>这个栗子中work和tellYourWork都是私有属性（直接var声明），通过实例去调用是会报错的，就像最后一行。name是定义在原型对象上的，属于公有属性，aboutMe通过this承接的，也属于公有方法，能被实例调用的。</p>
-<p><em>构造函数内部，只有this承接的是公有的。</em></p>
-<p>那么静态属性呢?</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Person.soul=<span class="string">'more'</span></span><br><span class="line">Person.live=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"do your best！"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>像这个直接定义在构造函数上的就是静态方法，直接能被Person调用，但是不能被实例调用的！</p>
-<p><strong>总结</strong>：私有属性和方法是直接用var来定义，只能在构造函数中被使用，函数外部无法获取。公有属性和方法有两种方式定义，一种是定义在原型对象上的，另一种是通过this承接的，它们能被实例调用。静态属性和方法是直接定义在构造函数上的，能直接被构造函数调用，但是不能存在实例上，也就不能被实例调用。</p>
-<p><strong>公有属性和方法中，实例自身的属性和方法与原型对象上的属性和方法有什么区别？</strong><br>原型对象上的属性和方法是不会出现在实例上的，我们只是能够调用它，我们可以通过Object.keys和Object.getOwnPropertyNames都能查看实例上的属性，会发现定义在原型对象上的属性不会被这两个方法遍历到。另外，这两个方法的区别是keys不能遍历不可枚举属性，而getOwnPropertyNames能遍历。（关于属性对象自行找谷哥、度娘）</p>
-<p><em>举个栗子</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.age=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">let</span> person=<span class="keyword">new</span> Person(<span class="string">'贾克斯'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(person));</span><br><span class="line"><span class="comment">//设置name属性的属性对象</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person,<span class="string">'name'</span>,&#123;</span><br><span class="line">    enumerable:<span class="literal">false</span> <span class="comment">//属性不可枚举</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.keys(person));</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(person));</span><br></pre></td></tr></table></figure>
-<p><em>打印结果</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="string">'name'</span> ]</span><br><span class="line">[]    <span class="comment">//keys不能遍历不可枚举属性</span></span><br><span class="line">[ <span class="string">'name'</span> ]</span><br></pre></td></tr></table></figure>
-<p>问题来了，如果构造函数和原型对象上都有一个相同的属性，冲突了怎么办？<br>其实也简单，好比你身上有足够的多的零花钱，还会去找父母要吗？如果父母也没钱呢？（停 打住！咱们不能这样）<br>我们还是直接引出原型链查找的概念吧！<br>如果当某个属性在原型对象上找不到了，别忘了原型对象也是有原型的，这样一层一层的网上找，直到找到属性或者达到原型链尾端null（Object.prototype）</p>
-<p><em>举个栗子最直接</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="built_in">Object</span>.prototype.money=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">let</span> person=<span class="keyword">new</span> Person();</span><br><span class="line"><span class="built_in">console</span>.log(Person.prototype);</span><br><span class="line"><span class="built_in">console</span>.log(person.money);</span><br></pre></td></tr></table></figure>
-<p><em>打印结果</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Person &#123;&#125;  <span class="comment">//Person原型对象是空的</span></span><br><span class="line"><span class="number">20</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="es6之后的封装"><a href="#es6之后的封装" class="headerlink" title="es6之后的封装"></a>es6之后的封装</h2><p>为什么说es6之后的封装要单独拎出来呢？   –es6新增了class语法糖<br><strong>语法糖</strong>：编译结果不变的情况下，以更加优雅的代码来实现原本可以实现的功能。（class语法糖就替代了es6之前的构造函数。）</p>
-<p>比如上面代码可以用class来代替<br><em>构造函数</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> work=<span class="string">"攻城狮"</span>;</span><br><span class="line">	<span class="keyword">var</span> tellYourWork=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"你的工作是："</span>+work);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.abouMe=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"hi!"</span>);</span><br><span class="line">        tellYourWork();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><em>class</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> work=<span class="string">"攻城狮"</span>;</span><br><span class="line">        <span class="keyword">let</span> tellYourWork=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"你的工作是："</span>+work);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    aboutMe=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"hi!"</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    tellYourWork();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们看到我们把私有属性放进了class的constructor(构造函数)中，我们可以认为constructor中var定义的变量为私有变量，但是不能认为constructor中的都是私有属性。</p>
-<p>重新用class写一个（构造函数和class命名最前面一个字母建议大写）</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">        <span class="keyword">let</span> work=<span class="string">"攻城狮"</span>;</span><br><span class="line">        <span class="keyword">let</span> tellYourWork=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"你的工作是："</span>+work);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">this</span>.aboutMe=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"hi!"</span>);</span><br><span class="line">            tellYourWork();</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">this</span>.name=name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">do</span> = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"CV侠上线"</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    live()&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"do your best"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> money=<span class="string">'MORE'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>能分清各自是什么属性吗？<br><strong>首先</strong>最容易看出的是私有属性，它定义在constructor中，并用var、let定义的变量。<br><strong>其次</strong>定义在constructor中，用this承接的是公有属性，它是定义在实例上的。<br><strong>另外</strong>看见static一看就知道它应该就是静态属性了，还有一种定义方式和构造函数中一样，直接Person.money=’MORE’;<br>需要<strong>注意</strong>的是constructor外的两个方法，它们虽然都是公有属性，但是它们定义的地方不一样，用=定义的是定义在实例上的，而直接定义的是定义在原型对象上的，记住类的所有方法都定义在类的prototype属性上面。有点不理解do也是类上的方法啊，为什么它没定义在原型对象上，这样说吧，do方法通过用=定义，表面do是一个变量来接住一个匿名函数。</p>
-<hr>
-<p>就挤这么点牙膏了(因特尔：明天来牙膏厂上班)</p>
-
+        
       
 
       
@@ -254,6 +202,13 @@
         
     </div>
 </aside>
+
+
+
+
+
+
+
 
 
 
@@ -310,8 +265,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
     
       
-      
-      
     
       
       
@@ -323,15 +276,13 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
-      
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
@@ -394,38 +345,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     	</section>
     
 
-    
-    	<section class="tools-section tools-section-friends" q-show="friends">
-  		
-        <ul class="search-ul">
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
-            </li>
-          
-        </ul>
-  		
-    	</section>
     
 
     
