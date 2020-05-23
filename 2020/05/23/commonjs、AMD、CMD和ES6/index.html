@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>戴子文的博客</title>
+  <title>commonjs、AMD、CMD和ES6 | 戴子文的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="南昌大学2017级，找不到实习的阿贾克斯">
-<meta property="og:type" content="website">
-<meta property="og:title" content="戴子文的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="javascript模块化模块化：将代码集合在一个单独的块中实现特定的功能，当程序需要该功能时，直接引入，不需要时直接删除，不破坏整个系统。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="commonjs、AMD、CMD和ES6">
+<meta property="og:url" content="http://yoursite.com/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/index.html">
 <meta property="og:site_name" content="戴子文的博客">
-<meta property="og:description" content="南昌大学2017级，找不到实习的阿贾克斯">
+<meta property="og:description" content="javascript模块化模块化：将代码集合在一个单独的块中实现特定的功能，当程序需要该功能时，直接引入，不需要时直接删除，不破坏整个系统。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-23T05:18:56.000Z">
+<meta property="article:modified_time" content="2020-05-23T05:56:27.436Z">
 <meta property="article:tag" content="“前端，js，vue，webpack，http，数据结构与算法”">
 <meta name="twitter:card" content="summary">
   
@@ -136,16 +138,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-commonjs、AMD、CMD和ES6" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-commonjs、AMD、CMD和ES6" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/">commonjs、AMD、CMD和ES6</a>
+    <h1 class="article-title" itemprop="name">
+      commonjs、AMD、CMD和ES6
     </h1>
   
 
@@ -159,7 +159,32 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>javascript模块化<br>模块化：将代码集合在一个单独的块中实现特定的功能，当程序需要该功能时，直接引入，不需要时直接删除，不破坏整个系统。</p>
-        
+<a id="more"></a>
+<p><strong>模块化好处</strong><br>1、命名空间<br>在没有模块化的情况下，每个js中的接口直接暴露在了全局变量中，污染了命名空间，导致很容易在全局变量中命名冲突，某些属性或方法会被覆盖。<br>2、可重用性<br>根据模块实现的特定功能，在需要的时候直接引用过来，不需要再重新去代码实现。<br>3、可维护性<br>对某特定功能无法满足需求时，直接在模块内部修改实现方法，不会破坏整个系统。</p>
+<p><em>如何实现模块化？有什么规范？</em></p>
+<h2 id="commonjs规范"><a href="#commonjs规范" class="headerlink" title="commonjs规范"></a>commonjs规范</h2><p>commonjs实现nodejs、webpack<br>它是通过使用module.exprots/exports对外输出接口，使用require加载接口（了解过nodejs就应该知道它是如何进行模块化的）</p>
+<p><em>例子：</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//a.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">del</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports=&#123;</span><br><span class="line">    add:add,</span><br><span class="line">    del:del</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//b.js</span></span><br><span class="line"><span class="keyword">let</span> a=<span class="built_in">require</span>(<span class="string">'a'</span>);</span><br><span class="line">a.add(<span class="number">3</span>, <span class="number">2</span>);</span><br><span class="line">a.del(<span class="number">3</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>但是要注意，commonjs是同步加载的，以上面的例子来说，b.js如果需要引用add和del方法，必须等到a模块加载完成，对于浏览器来说会发生堵塞。而在服务器端，模块文件都是存储在磁盘中的，加载速度很快，不会产生堵塞的问题，所以说commonjs是服务器端的模块化规范。为了解决客户端堵塞的问题，就需要采用异步的加载方式，就有了后面的AMD规范。</p>
+<h2 id="AMD规范"><a href="#AMD规范" class="headerlink" title="AMD规范"></a>AMD规范</h2><p>AMD的实现requirejs<br>它是通过define方法定义模块，使用require方法加载模块</p>
+<p><strong>定义模块（define方法）</strong><br>该方法可以接收3个参数，第一个参数是模块名（可省略），第二个参数时依赖的模块数组（可省略），第三个参数是一个回调函数（参数为第二个参数的数组成员，返回一个对象，提供接口）<br><em>省略第一个参数</em><br>模块为匿名模块，它的模块名默认为该js文件名<br><em>省略第二个参数</em><br>模块为独立模块，不需要依赖其它模块</p>
+<p><em>例子：</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define([<span class="string">'jquery'</span>,<span class="string">'require'</span>],<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        a:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">        b:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>加载模块</strong><br>与定义模块类似，2个参数，为denfine的后两个参数，回调函数不需要返回一个对象</p>
+<p><strong>requirejs的问题</strong>（阿里玉伯列举的）<br><em>1、在 RequireJS 中， require 有多重用法</em><br><em>2、RequireJS API 很容易在代码中留下垃圾</em><br><em>3、压缩之后还有 16KB，它只是一个模块加载程序，应该更小，更快</em><br><em>4、RequireJS 的源代码在我们的使用中包含许多不必要的函数</em><br>因此玉伯推出了seajs（CMD规范的实现）</p>
+<h2 id="CMD规范"><a href="#CMD规范" class="headerlink" title="CMD规范"></a>CMD规范</h2><p>CMD的实现seajs<br>它与AMD很类似，它通过define方法定义模块，使用use()加载模块。</p>
+<p><strong>定义模块（define）</strong><br>接收一个factory参数（函数、对象或字符串）,当factory参数时函数的时候，函数接收3个参数，第一个参数是require（导入依赖的模块），第二个参数是exports（导出方法），第三个参数是module（导出模块）。</p>
+<p><strong>加载模块（use）</strong><br>接受两个参数，第一个参数是依赖模块数组，第二个参数是回调函数（参数是数组成员）</p>
+<p><em>例子：</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span> (<span class="params">require,exports,module</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> path=<span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a+b;</span><br><span class="line">    &#125;</span><br><span class="line">    exports.add=add;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">seajs.use([a.js],<span class="function"><span class="keyword">function</span> (<span class="params">a</span>) </span>&#123;</span><br><span class="line">    a.add(<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>es6标准的发布，希望模块化规范能在浏览器和服务端的统一。</p>
+<h2 id="es6-module"><a href="#es6-module" class="headerlink" title="es6 module"></a>es6 module</h2><p>它是通过export/export default对外输出接口，使用import加载接口</p>
+<p><em>例子：</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//a.js</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">del</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> &#123;add,del&#125; <span class="comment">//es6写法 add：add可以直接写成add</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//b.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;add,del&#125; <span class="keyword">from</span> <span class="string">'./a'</span> <span class="comment">//解构赋值</span></span><br><span class="line">add(<span class="number">3</span>, <span class="number">2</span>);</span><br><span class="line">del(<span class="number">3</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>缺点：</strong>浏览器兼容性不大好</p>
+<h2 id="AMD与CMD区别"><a href="#AMD与CMD区别" class="headerlink" title="AMD与CMD区别"></a>AMD与CMD区别</h2><p>AMD依赖前置、提前执行（在一开始就把所有模块加载完），CMD依赖就近、延迟执行（在需要的时候加载模块）</p>
+<h2 id="commonjs与es6-module区别"><a href="#commonjs与es6-module区别" class="headerlink" title="commonjs与es6 module区别"></a>commonjs与es6 module区别</h2><p><em>1、commonjs输出的是一个拷贝的值，es6是引用的值（可以改模块内部，有浅拷贝的意思了）</em><br><em>2、commonjs运行是加载，es6编译时加载</em><br><em>3、commonjs加载整个模块，es6可只加载某部分接口</em><br><em>4、commonjs的this指向当前模块，es6的this指向undefind</em><br><em>5、es6可解决重复引用的问题</em></p>
+
       
 
       
@@ -170,16 +195,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">js的封装</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -194,91 +278,67 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-js的封装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/">js的封装</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/" class="archive-article-date">
-  	<time datetime="2020-05-22T03:53:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面向对象的三大特性：封装、继承、多态<br>但是javascript是一门弱语言，根本不需要多态这么个概念。<br>开始了！开始了！</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#commonjs规范"><span class="toc-number">1.</span> <span class="toc-text">commonjs规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AMD规范"><span class="toc-number">2.</span> <span class="toc-text">AMD规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMD规范"><span class="toc-number">3.</span> <span class="toc-text">CMD规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#es6-module"><span class="toc-number">4.</span> <span class="toc-text">es6 module</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AMD与CMD区别"><span class="toc-number">5.</span> <span class="toc-text">AMD与CMD区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commonjs与es6-module区别"><span class="toc-number">6.</span> <span class="toc-text">commonjs与es6 module区别</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-
-
-
-
-
-
-
   
   
+  
+
+  
+
+  
+
+  
+
+
+
+
+   
+       <section id="comments" class="comments">
+         <style>
+           .comments{margin:30px;padding:10px;background:#fff}
+           @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+         </style>
+         <div id="vcomment" class="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var notify = 'false' == true ? true : false;
+  var verify = 'false' == true ? true : false;
+  new Valine({
+    av: AV,
+    el: '#vcomment',
+    notify: notify,
+    app_id: "Qp7DpOTqjMQBuySuNwe0qmrO-gzGzoHsz",
+    app_key: "eX9WySfoEqHl6vjOjvJ3RXBo",
+    placeholder: "Just go go",
+    avatar: "mm",
+  });
+</script>
+
+     </section>
+   
+
+
+
+
 
 
           </div>
@@ -298,8 +358,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
