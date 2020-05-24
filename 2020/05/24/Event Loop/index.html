@@ -8,16 +8,16 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Event Loop | 戴子文的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="单线程我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程），另外我们还能通过Web Worker开一个子线程，我们所谓的js单线程是负责解析和执行代码的线程只有一个（js引擎线程，也就是主线程）。js使用单线程是为了避免多个线程同时操作DOM导致结果的不确定性，而且通过WebWorker开的线程是不能操作DOM">
+  <meta name="description" content="我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Event Loop">
 <meta property="og:url" content="http://yoursite.com/2020/05/24/Event%20Loop/index.html">
 <meta property="og:site_name" content="戴子文的博客">
-<meta property="og:description" content="单线程我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程），另外我们还能通过Web Worker开一个子线程，我们所谓的js单线程是负责解析和执行代码的线程只有一个（js引擎线程，也就是主线程）。js使用单线程是为了避免多个线程同时操作DOM导致结果的不确定性，而且通过WebWorker开的线程是不能操作DOM">
+<meta property="og:description" content="我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程）">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3960676073,2838544562&fm=26&gp=0.jpg">
 <meta property="article:published_time" content="2020-05-24T05:35:58.000Z">
-<meta property="article:modified_time" content="2020-05-24T05:40:11.616Z">
+<meta property="article:modified_time" content="2020-05-24T06:33:59.374Z">
 <meta property="article:tag" content="“前端，js，vue，webpack，http，数据结构与算法”">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3960676073,2838544562&fm=26&gp=0.jpg">
@@ -160,8 +160,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="单线程"><a href="#单线程" class="headerlink" title="单线程"></a>单线程</h2><p>我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程），另外我们还能通过Web Worker开一个子线程，我们所谓的js单线程是负责解析和执行代码的线程只有一个（js引擎线程，也就是主线程）。js使用单线程是为了避免多个线程同时操作DOM导致结果的不确定性，而且通过WebWorker开的线程是不能操作DOM的，它负责做一些逻辑运算，不会阻塞主线程。</p>
-<a id="more"></a>
+        <p>我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程）<a id="more"></a>，另外我们还能通过Web Worker开一个子线程，我们所谓的js单线程是负责解析和执行代码的线程只有一个（js引擎线程，也就是主线程）。js使用单线程是为了避免多个线程同时操作DOM导致结果的不确定性，而且通过WebWorker开的线程是不能操作DOM的，它负责做一些逻辑运算，不会阻塞主线程。</p>
+<!--more -->
 <p>js是单线程执行的，我们需要了解它内部如何进行的，这就得扯到<strong>event loop</strong>。<br><em>理解event loop前需要知道异步任务和同步任务、宏任务和微任务、执行栈、任务队列。</em></p>
 <h2 id="异步任务和同步任务"><a href="#异步任务和同步任务" class="headerlink" title="异步任务和同步任务"></a>异步任务和同步任务</h2><p>同步：js执行是按顺序一步一步往下执行，上一步代码还未执行完不会执行下一步任务<br>异步：当执行到耗时的代码时，不需要等待该代码执行完就能执行后面的代码<br>js是单线程的，当某个任务在主线程上耗时比较长时，如果等待该任务完成再去执行下面的任务（同步执行），会发生浏览器的阻塞，给用户带来不好的体验。这是就需要浏览器把这些费时的任务放入到异步任务队列。常见的异步任务有ajax请求、定时器、promise、I/O操作（可以理解为比较耗时的任务）</p>
 <h2 id="宏任务和微任务"><a href="#宏任务和微任务" class="headerlink" title="宏任务和微任务"></a>宏任务和微任务</h2><p>js执行到异步任务时会把异步任务放入到任务队列中，在异步队列中也会把异步任务分为宏任务（macrotask）和微任务（microtask）<br>宏任务包括定时器、I/O操作、渲染以及整个script<br>微任务包括promise 、process.nextTick</p>
@@ -268,7 +268,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#单线程"><span class="toc-number">1.</span> <span class="toc-text">单线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异步任务和同步任务"><span class="toc-number">2.</span> <span class="toc-text">异步任务和同步任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏任务和微任务"><span class="toc-number">3.</span> <span class="toc-text">宏任务和微任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行栈"><span class="toc-number">4.</span> <span class="toc-text">执行栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Loop"><span class="toc-number">5.</span> <span class="toc-text">Event Loop</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#异步任务和同步任务"><span class="toc-number">1.</span> <span class="toc-text">异步任务和同步任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏任务和微任务"><span class="toc-number">2.</span> <span class="toc-text">宏任务和微任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#执行栈"><span class="toc-number">3.</span> <span class="toc-text">执行栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Loop"><span class="toc-number">4.</span> <span class="toc-text">Event Loop</span></a></li></ol>
                     </div>
                 </span>
             </div>
