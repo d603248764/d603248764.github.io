@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 戴子文的博客</title>
+  <title>webpack优化 | 戴子文的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="南昌大学2017级，找不到实习的阿贾克斯">
-<meta property="og:type" content="website">
-<meta property="og:title" content="戴子文的博客">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="webpack性能的优化包括两部分，一部分是对开发环境性能的优化，另一部分是对生产环境性能的优化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack优化">
+<meta property="og:url" content="http://yoursite.com/2020/05/31/webpack%E4%BC%98%E5%8C%96/index.html">
 <meta property="og:site_name" content="戴子文的博客">
-<meta property="og:description" content="南昌大学2017级，找不到实习的阿贾克斯">
+<meta property="og:description" content="webpack性能的优化包括两部分，一部分是对开发环境性能的优化，另一部分是对生产环境性能的优化。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-31T07:59:08.000Z">
+<meta property="article:modified_time" content="2020-05-31T08:25:29.026Z">
 <meta property="article:tag" content="“前端，js，vue，webpack，http，数据结构与算法”">
 <meta name="twitter:card" content="summary">
   
@@ -136,157 +138,204 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-webpack优化" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      webpack优化
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/" class="archive-article-date">
+
+        
+        <a href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/" class="archive-article-date">
   	<time datetime="2020-05-31T07:59:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-31</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/">webpack优化</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>webpack性能的优化包括两部分，一部分是对开发环境性能的优化，另一部分是对生产环境性能的优化。<a id="more"></a></p>
+<h1 id="开发环境性能优化"><a href="#开发环境性能优化" class="headerlink" title="开发环境性能优化"></a>开发环境性能优化</h1><p><strong>优化打包构建速度</strong>：HMR<br><strong>优化代码调试</strong>：source-map</p>
+<h2 id="HMR"><a href="#HMR" class="headerlink" title="HMR"></a>HMR</h2><p>hot module replacement 热模块替换 / 模块热替换<br>添加、修改模块（css/js）后不会全部打包所有模块，只更新修改的模块。（对于html一般不使用HMR功能，如果需要就把html文件引入entry）<br>通过在devServer中设置hot属性为true开启HMR功能</p>
+<p><strong>优化代码调试</strong>：source-map</p>
+<h2 id="source-map"><a href="#source-map" class="headerlink" title="source-map"></a>source-map</h2><p>一种提供源代码到构建后代码映射技术 （如果构建后代码出错了，通过映射可以追踪源代码错误）<br>通过devtool设置，例devtool: ‘eval-source-map’</p>
+<p>它的形式如[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map<br>source-map：外部  错误代码准确信息 和 源代码的错误位置<br>inline-source-map：内联  只生成一个内联source-map错误代码准确信息和源代码的错误位置<br>hidden-source-map：外部  错误代码错误原因，但是没有错误位置不能追踪源代码错误，只能提示到构建后代码的错误位置<br>eval-source-map：内联  每一个文件都生成对应的source-map，都在eval错误代码准确信息和源代码的错误位置<br>nosources-source-map：外部  错误代码准确信息, 但是没有任何源代码信息<br>cheap-source-map：外部  错误代码准确信息和源代码的错误位置只能精确的行<br>cheap-module-source-map：外部  错误代码准确信息 和 源代码的错误位置，module会将loader的source map加入<br>（<strong>内联 和 外部的区别：1. 外部生成了文件，内联没有 2. 内联构建速度更快</strong>）</p>
+<p><strong>选择</strong><br><em>开发环境选择需要速度快，调试更友好的</em><br>速度快(eval&gt;inline&gt;cheap&gt;…)<br>        eval-cheap-souce-map<br>        eval-source-map<br>调试更友好<br>        souce-map<br>        cheap-module-souce-map<br>        cheap-souce-map<br>综合推荐 eval-source-map  / eval-cheap-module-souce-map</p>
+<p><em>生产环境考虑源代码要不要隐藏? 调试要不要更友好？</em>（内联会让代码体积变大，所以在生产环境不用内联）<br>      nosources-source-map 全部隐藏<br>      hidden-source-map 只隐藏源代码，会提示构建后代码错误信息<br>综合推荐 source-map / cheap-module-souce-map</p>
+<h1 id="生产环境性能优化"><a href="#生产环境性能优化" class="headerlink" title="生产环境性能优化"></a>生产环境性能优化</h1><p><strong>优化打包构建速度</strong>：oneOf、babel缓存、多进程打包<br><strong>优化代码运行的性能</strong>：缓存(hash-chunkhash-contenthash)、tree shaking、code split、pwa</p>
+<h2 id="oneOf"><a href="#oneOf" class="headerlink" title="oneOf"></a>oneOf</h2><p>当有些重复使用的loader我们可以通过一个变量“封装起来”</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> commonCssLoader = [</span><br><span class="line">  MiniCssExtractPlugin.loader,</span><br><span class="line">  <span class="string">'css-loader'</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// 还需要在package.json中定义browserslist</span></span><br><span class="line">    loader: <span class="string">'postcss-loader'</span>,</span><br><span class="line">    options: &#123;</span><br><span class="line">      ident: <span class="string">'postcss'</span>,</span><br><span class="line">      plugins: <span class="function"><span class="params">()</span> =&gt;</span> [<span class="built_in">require</span>(<span class="string">'postcss-preset-env'</span>)()]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>当一些文件只需要匹配一次loader时，可以通过oneOf声明</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">oneOf: [</span><br><span class="line">          &#123;</span><br><span class="line">            test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">            use: [...commonCssLoader]</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            test: <span class="regexp">/\.less$/</span>,</span><br><span class="line">            use: [...commonCssLoader, <span class="string">'less-loader'</span>]</span><br><span class="line">          &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>这样不再会去反复匹配，影响性能。</p>
+<h2 id="babel缓存"><a href="#babel缓存" class="headerlink" title="babel缓存"></a>babel缓存</h2><p>通过cacheDirectory: true开启缓存，可以让第二次打包构建速度更快</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">            test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">            exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">            loader: <span class="string">'babel-loader'</span>,</span><br><span class="line">            options: &#123;</span><br><span class="line">              presets: [</span><br><span class="line">                [</span><br><span class="line">                  <span class="string">'@babel/preset-env'</span>,</span><br><span class="line">                  &#123;</span><br><span class="line">                    useBuiltIns: <span class="string">'usage'</span>,</span><br><span class="line">                    corejs: &#123; <span class="attr">version</span>: <span class="number">3</span> &#125;,</span><br><span class="line">                    targets: &#123;</span><br><span class="line">                      chrome: <span class="string">'60'</span>,</span><br><span class="line">                      firefox: <span class="string">'50'</span></span><br><span class="line">                    &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">                ]</span><br><span class="line">              ],</span><br><span class="line">              <span class="comment">// 开启babel缓存</span></span><br><span class="line">              <span class="comment">// 第二次构建时，会读取之前的缓存</span></span><br><span class="line">              cacheDirectory: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="多线程打包"><a href="#多线程打包" class="headerlink" title="多线程打包"></a>多线程打包</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">use: [</span><br><span class="line">              <span class="comment">/* </span></span><br><span class="line"><span class="comment">                开启多进程打包。 </span></span><br><span class="line"><span class="comment">                进程启动大概为600ms，进程通信也有开销。</span></span><br><span class="line"><span class="comment">                只有工作消耗时间比较长，才需要多进程打包</span></span><br><span class="line"><span class="comment">              */</span></span><br><span class="line">              &#123;</span><br><span class="line">                loader: <span class="string">'thread-loader'</span>,</span><br><span class="line">                options: &#123;</span><br><span class="line">                  workers: <span class="number">2</span> <span class="comment">// 进程2个</span></span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">        ]</span><br></pre></td></tr></table></figure>
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>打包后文件名带有hash值时，当我们每次构建时只会生成一个hash值，如果改动一个文件打包，所以缓存都会失效，因为使用的是一个hash值。如果使用chunkhash，那根据chunk来生成hash值，如果打包来源于一个chunk，那么hash值也会一样。最终使用contenthash，它是根据文件的内容来生成hash值的，不同文件的hash值不一定一样。</p>
+<h2 id="tree-shaking"><a href="#tree-shaking" class="headerlink" title="tree shaking"></a>tree shaking</h2><p>通过“摇”js，把里面不需要的代码“摇”掉，就相当于摇树，把树的枯叶摇掉。（还是有些无用代码会被保留下来）<br>在package.json中配置 ：<br>      “sideEffects”: false 所有代码都没有副作用（都可以进行tree shaking）<br>        问题：可能会把css / @babel/polyfill （副作用）文件干掉<br>      “sideEffects”: [“<em>.css”, “</em>.less”]</p>
+<h2 id="code-split"><a href="#code-split" class="headerlink" title="code split"></a>code split</h2><p>通常我们是将所有得js文件全部打包到一个build.js文件中去，如果项目过大时，加载build.js时间会过长，这时候就需要通过code split将代码进行分割，<br>通常会把第三方类库与我们的业务代码给分割开，另外自动分析多入口chunk中，有没有公共文件，单独打包成一个chunk。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">optimization: &#123;</span><br><span class="line">    splitChunks: &#123;</span><br><span class="line">      chunks: <span class="string">'all'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="PWA"><a href="#PWA" class="headerlink" title="PWA"></a>PWA</h2><p>渐进式网络开发应用程序，当离线时可访问。<br>安装插件workbox-webpack-plugin</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> WorkboxWebpackPlugin.GenerateSW(&#123;</span><br><span class="line">      <span class="comment">/*</span></span><br><span class="line"><span class="comment">        1. 帮助serviceworker快速启动</span></span><br><span class="line"><span class="comment">        2. 删除旧的 serviceworker</span></span><br><span class="line"><span class="comment">        生成一个 serviceworker 配置文件~</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">      clientsClaim: <span class="literal">true</span>,</span><br><span class="line">      skipWaiting: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/05/31/webpack%E4%BC%98%E5%8C%96/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/" class="archive-article-date">
-  	<time datetime="2020-05-24T12:22:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">webpack基操</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/">webpack基操</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开发环境性能优化"><span class="toc-number">1.</span> <span class="toc-text">开发环境性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HMR"><span class="toc-number">1.1.</span> <span class="toc-text">HMR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#source-map"><span class="toc-number">1.2.</span> <span class="toc-text">source-map</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#生产环境性能优化"><span class="toc-number">2.</span> <span class="toc-text">生产环境性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#oneOf"><span class="toc-number">2.1.</span> <span class="toc-text">oneOf</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babel缓存"><span class="toc-number">2.2.</span> <span class="toc-text">babel缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多线程打包"><span class="toc-number">2.3.</span> <span class="toc-text">多线程打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#缓存"><span class="toc-number">2.4.</span> <span class="toc-text">缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-shaking"><span class="toc-number">2.5.</span> <span class="toc-text">tree shaking</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#code-split"><span class="toc-number">2.6.</span> <span class="toc-text">code split</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PWA"><span class="toc-number">2.7.</span> <span class="toc-text">PWA</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-event">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/24/Event%20Loop/" class="archive-article-date">
-  	<time datetime="2020-05-24T05:35:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/24/Event%20Loop/">Event Loop</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/" class="archive-article-date">
-  	<time datetime="2020-05-23T05:18:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/">commonjs、AMD、CMD和ES6</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/" class="archive-article-date">
-  	<time datetime="2020-05-22T03:53:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/">js的封装</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+
+
+
+   
+       <section id="comments" class="comments">
+         <style>
+           .comments{margin:30px;padding:10px;background:#fff}
+           @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+         </style>
+         <div id="vcomment" class="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var notify = 'false' == true ? true : false;
+  var verify = 'false' == true ? true : false;
+  new Valine({
+    av: AV,
+    el: '#vcomment',
+    notify: notify,
+    app_id: "Qp7DpOTqjMQBuySuNwe0qmrO-gzGzoHsz",
+    app_key: "eX9WySfoEqHl6vjOjvJ3RXBo",
+    placeholder: "Just go go",
+    avatar: "mm",
+  });
+</script>
+
+     </section>
+   
+
+
+
+
 
 
           </div>
@@ -307,8 +356,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
