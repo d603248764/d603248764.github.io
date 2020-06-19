@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>戴子文的博客</title>
+  <title>virtual DOM | 戴子文的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="南昌大学2017级，找不到实习的阿贾克斯">
-<meta property="og:type" content="website">
-<meta property="og:title" content="戴子文的博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="初次学习vue这个框架，对于虚拟dom（Vdom）很难理解，什么是Vdom？为什么需要Vdom？直到我看了它的原理和源码之后不得不佩服尤大大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="virtual DOM">
+<meta property="og:url" content="http://yoursite.com/2020/06/19/virtual%20DOM/index.html">
 <meta property="og:site_name" content="戴子文的博客">
-<meta property="og:description" content="南昌大学2017级，找不到实习的阿贾克斯">
+<meta property="og:description" content="初次学习vue这个框架，对于虚拟dom（Vdom）很难理解，什么是Vdom？为什么需要Vdom？直到我看了它的原理和源码之后不得不佩服尤大大">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-19T07:33:20.000Z">
+<meta property="article:modified_time" content="2020-06-19T07:48:43.837Z">
 <meta property="article:tag" content="“前端，js，vue，webpack，http，数据结构与算法”">
 <meta name="twitter:card" content="summary">
   
@@ -136,16 +138,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-virtual DOM" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-virtual DOM" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/19/virtual%20DOM/">virtual DOM</a>
+    <h1 class="article-title" itemprop="name">
+      virtual DOM
     </h1>
   
 
@@ -158,8 +158,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>初次学习vue这个框架，对于虚拟dom（Vdom）很难理解，什么是Vdom？为什么需要Vdom？直到我看了它的原理和源码之后不得不佩服尤大大
-        
+        <p>初次学习vue这个框架，对于虚拟dom（Vdom）很难理解，什么是Vdom？为什么需要Vdom？直到我看了它的原理和源码之后不得不佩服尤大大<a id="more"></a></p>
+<h2 id="什么是Vdom？"><a href="#什么是Vdom？" class="headerlink" title="什么是Vdom？"></a>什么是Vdom？</h2><p>Vdom是根据dom生成一个js对象，它相当于js和真实dom的中间层，我们可以通过js操作这个对象来修改真正的dom<br>真实dom与其对应的js对象：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//真实dom</span></span><br><span class="line">&lt;div id=<span class="string">"A"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"B"</span>&gt;</span><br><span class="line">        &lt;span&gt;</span><br><span class="line">            Vdom</span><br><span class="line">        &lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>div&gt;</span><br><span class="line"><span class="comment">//对应的js对象</span></span><br><span class="line"><span class="keyword">var</span> Vnode=&#123;</span><br><span class="line">    el:<span class="string">'div'</span></span><br><span class="line">    tag:<span class="string">'DIV'</span>,</span><br><span class="line">    sel:<span class="string">'div#A.B'</span></span><br><span class="line">    children:[</span><br><span class="line">        &#123;</span><br><span class="line">            el:<span class="string">'span'</span></span><br><span class="line">            tag:<span class="string">'SPAN'</span>,</span><br><span class="line">            sel:<span class="string">'span'</span></span><br><span class="line">            text:<span class="string">'Vdom'</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="为什么需要Vdom？"><a href="#为什么需要Vdom？" class="headerlink" title="为什么需要Vdom？"></a>为什么需要Vdom？</h2><p>浏览器中去操作dom是非常消耗性能的，如果频繁的操作dom大大增加了浏览器压力甚至会出现卡顿的现象，所以我们应该尽量去减少dom更新的次数。传统的js去操作dom的话，每遇到一个dom操作就需要浏览器重新构建一遍，假设有100个dom需要更新，会去执行100次的dom操作，而如果使用Vdom，它并不会立即操作dom，而是采用js对象模拟的方法将dom的对比操作放在js层并进行修改，最终映射成真实dom，减少不必要的重绘。简单来讲就相当于网购，你每支付一次相当于一次dom操作，传统js操作就相当于你每买一件商品就支付一次，Vdom相当于购物车，把每一件商品添加到购物车，最后一次性支付。这减少了很多不必要的dom操作，降低性能消耗。</p>
+<h2 id="Vdom就是最好吗？"><a href="#Vdom就是最好吗？" class="headerlink" title="Vdom就是最好吗？"></a>Vdom就是最好吗？</h2><p>了解了上述这些点，可能会觉得Vdom一定是最优的dom操作方案，然而在大多数时候并不是最优的。（尤大大在知乎上有篇文章提到过）如果想要达到最优，需要手动根据情况优化，Vdom只是普遍适合大多数情况，虽然它不会给你带来最好的性能，但是它能让你简单的去使用，并且性能上能过得去。手动优化虽然性能上可能更好，但是操作更加复杂、费时以及后期的维护性比较差。</p>
+<h2 id="为什么Vdom不是最优？"><a href="#为什么Vdom不是最优？" class="headerlink" title="为什么Vdom不是最优？"></a>为什么Vdom不是最优？</h2><p>如果dom中每条数据都要修改，传统的js操作只需要直接操作dom就可以，但是对于Vdom来说还存在diff算法，算法也会耗费比较多的性能。</p>
+<h2 id="Vdom怎么实现？"><a href="#Vdom怎么实现？" class="headerlink" title="Vdom怎么实现？"></a>Vdom怎么实现？</h2><p>上述也提到过，Vdom是将修改后的dom和真实的dom进行比较、修改，最终映射成真实的dom，其中找出两段dom之间结构、内容差距并修改的就是用的diff算法。应用diff算法，找出本次dom必须更新的节点来更新，其他的不更新。</p>
+<h2 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h2><p>首先需要明确diff算法的比较只会在同层级进行，不会垮层级比较。很多教程会提到tree diff、component diff和element diff，实在是不大好理解。</p>
+<p><strong>整个diff算法的代码结构：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span> (<span class="params">oldVnode, vnode</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sameVnode(oldVnode, vnode)) &#123;</span><br><span class="line">    	patchVnode(oldVnode, vnode)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	<span class="keyword">const</span> oEl = oldVnode.el <span class="comment">// 当前oldVnode对应的真实元素节点</span></span><br><span class="line">    	<span class="keyword">let</span> parentEle = api.parentNode(oEl)  <span class="comment">// 父元素</span></span><br><span class="line">    	createEle(vnode)  <span class="comment">// 根据Vnode生成新元素</span></span><br><span class="line">    	<span class="keyword">if</span> (parentEle !== <span class="literal">null</span>) &#123;</span><br><span class="line">            	api.insertBefore(parentEle, vnode.el, api.nextSibling(oEl)) <span class="comment">// 将新元素添加进父元素</span></span><br><span class="line">            	api.removeChild(parentEle, oldVnode.el)  <span class="comment">// 移除以前的旧元素节点</span></span><br><span class="line">           	oldVnode = <span class="literal">null</span></span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// some code </span></span><br><span class="line">    <span class="keyword">return</span> vnode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>diff算法主要就是这个patch方法，当某个dom节点的改变都会生成一个新的Vnode，将这个Vnode节点和原本的node去比较，对不同的进行修改，最终将Vnode挂载到父节点上。</p>
+<p><em>首先是调用sameVnode</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameVnode</span>(<span class="params">oldVnode, vnode</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> vnode.key === oldVnode.key &amp;&amp; vnode.el === oldVnode.el &amp;&amp; vnode.sel===oldVnode.sel</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法是比较新Vnode是否修改了key值、选择器以及标签，如果修改了，那没必要再对里面层级去比较了，直接替换整个就可以了。else中的语句就是添加修改后的节点，删除旧的节点。如果没有修改，那继续对深层进行比较。</p>
+<p><em>其次调用patchVnode</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">patchVnode (oldVnode, vnode) &#123;</span><br><span class="line">    <span class="keyword">const</span> el = vnode.el = oldVnode.el</span><br><span class="line">    <span class="keyword">let</span> i, oldCh = oldVnode.children, ch = vnode.children</span><br><span class="line">    <span class="keyword">if</span> (oldVnode === vnode) <span class="keyword">return</span>  <span class="comment">//没有改变直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (oldVnode.text !== <span class="literal">null</span> &amp;&amp; vnode.text !== <span class="literal">null</span> &amp;&amp; oldVnode.text !== vnode.text) &#123;</span><br><span class="line">        api.setTextContent(el, vnode.text)  <span class="comment">//文本内容有差异，修改文本内容</span></span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        updateEle(el, vnode, oldVnode)</span><br><span class="line">        <span class="keyword">if</span> (oldCh &amp;&amp; ch &amp;&amp; oldCh !== ch) &#123;</span><br><span class="line">            updateChildren(el, oldCh, ch) <span class="comment">//都有子节点，并且不同，则比较、修改子节点</span></span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (ch)&#123;</span><br><span class="line">            createEle(vnode)  <span class="comment">//新节点有子节点，老节点没有，则创建子节点 </span></span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (oldCh)&#123;</span><br><span class="line">            api.removeChildren(el) <span class="comment">//新节点没有子节点，老节点有，则删除老节点的子节点</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法主要是对节点内容进行比较，先是比较两节点里面是否一样，再比较文本内容，最后再去比较子节点，重点是子节点更深层的内容比较（ updateChildren）。</p>
+<p><em>最后调用updateChildren</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">updateChildren (parentElm, oldCh, newCh) &#123;</span><br><span class="line">    <span class="keyword">let</span> oldStartIdx = <span class="number">0</span>, newStartIdx = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> oldEndIdx = oldCh.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> oldStartVnode = oldCh[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> oldEndVnode = oldCh[oldEndIdx]</span><br><span class="line">    <span class="keyword">let</span> newEndIdx = newCh.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> newStartVnode = newCh[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> newEndVnode = newCh[newEndIdx]</span><br><span class="line">    <span class="keyword">let</span> oldKeyToIdx</span><br><span class="line">    <span class="keyword">let</span> idxInOld</span><br><span class="line">    <span class="keyword">let</span> elmToMove</span><br><span class="line">    <span class="keyword">let</span> before</span><br><span class="line">    <span class="keyword">while</span> (oldStartIdx &lt;= oldEndIdx &amp;&amp; newStartIdx &lt;= newEndIdx) &#123;</span><br><span class="line">            <span class="keyword">if</span> (oldStartVnode == <span class="literal">null</span>) &#123;   /</span><br><span class="line">                oldStartVnode = oldCh[++oldStartIdx] </span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (oldEndVnode == <span class="literal">null</span>) &#123;</span><br><span class="line">                oldEndVnode = oldCh[--oldEndIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (newStartVnode == <span class="literal">null</span>) &#123;</span><br><span class="line">                newStartVnode = newCh[++newStartIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (newEndVnode == <span class="literal">null</span>) &#123;</span><br><span class="line">                newEndVnode = newCh[--newEndIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldStartVnode, newStartVnode)) &#123;</span><br><span class="line">                patchVnode(oldStartVnode, newStartVnode)</span><br><span class="line">                oldStartVnode = oldCh[++oldStartIdx]</span><br><span class="line">                newStartVnode = newCh[++newStartIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldEndVnode, newEndVnode)) &#123;</span><br><span class="line">                patchVnode(oldEndVnode, newEndVnode)</span><br><span class="line">                oldEndVnode = oldCh[--oldEndIdx]</span><br><span class="line">                newEndVnode = newCh[--newEndIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldStartVnode, newEndVnode)) &#123; <span class="comment">//如果老子节点内容的开始端节点和新子节点内容的末尾端节点的一样，说明这个节点被移到末尾了</span></span><br><span class="line">                patchVnode(oldStartVnode, newEndVnode)</span><br><span class="line">                api.insertBefore(parentElm, oldStartVnode.el, api.nextSibling(oldEndVnode.el)) <span class="comment">//把前端的节点移到末尾</span></span><br><span class="line">                oldStartVnode = oldCh[++oldStartIdx]</span><br><span class="line">                newEndVnode = newCh[--newEndIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (sameVnode(oldEndVnode, newStartVnode)) &#123;<span class="comment">//如果老子节点内容的末尾端节点和新子节点内容的开始端节点的一样，说明这个节点被移到头部了</span></span><br><span class="line">                patchVnode(oldEndVnode, newStartVnode)</span><br><span class="line">                api.insertBefore(parentElm, oldEndVnode.el, oldStartVnode.el) <span class="comment">//把末尾的节点插到最前面</span></span><br><span class="line">                oldEndVnode = oldCh[--oldEndIdx]</span><br><span class="line">                newStartVnode = newCh[++newStartIdx]</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="comment">// 使用key时的比较</span></span><br><span class="line">                <span class="keyword">if</span> (oldKeyToIdx === <span class="literal">undefined</span>) &#123;</span><br><span class="line">                    oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx) <span class="comment">// 有key生成index表</span></span><br><span class="line">                &#125;</span><br><span class="line">                idxInOld = oldKeyToIdx[newStartVnode.key]</span><br><span class="line">                <span class="keyword">if</span> (!idxInOld) &#123;</span><br><span class="line">                    api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)</span><br><span class="line">                    newStartVnode = newCh[++newStartIdx]</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    elmToMove = oldCh[idxInOld]</span><br><span class="line">                    <span class="keyword">if</span> (elmToMove.sel !== newStartVnode.sel) &#123;</span><br><span class="line">                        api.insertBefore(parentElm, createEle(newStartVnode).el, oldStartVnode.el)</span><br><span class="line">                    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                        patchVnode(elmToMove, newStartVnode)</span><br><span class="line">                        oldCh[idxInOld] = <span class="literal">null</span></span><br><span class="line">                        api.insertBefore(parentElm, elmToMove.el, oldStartVnode.el)</span><br><span class="line">                    &#125;</span><br><span class="line">                    newStartVnode = newCh[++newStartIdx]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (oldStartIdx &gt; oldEndIdx) &#123;</span><br><span class="line">            before = newCh[newEndIdx + <span class="number">1</span>] == <span class="literal">null</span> ? <span class="literal">null</span> : newCh[newEndIdx + <span class="number">1</span>].el</span><br><span class="line">            addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx)</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (newStartIdx &gt; newEndIdx) &#123;</span><br><span class="line">            removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法对新子节点和老子节点进行比较、更新，先是对新、老子节点两端交错进行比较（新子节点两端分别和老子节点两端比较），从两端往中间慢慢进行比较。除了这样比较之外，还添加了key，目的是为了保存老子节点中内部的节点，当新子节点内部某个地方需要到的时候直接添加过不，不需要再重新创建节点，提高性能。</p>
+<p><strong>例如：</strong><br>老子节点内部节点顺序是： N  V  M  O<br>新子节点内部节点顺序是： V  D  O  M<br>如果不使用key来保存老子节点中的节点，那么会把N 和 V删除，再调换M和O的位置，最后新建V和D，添加了key之后，会把 N和 V保存起来，调换O和M，再从添加保存下来的V和新建D，两次区别中少创建了一次V。</p>
+<p><strong>这也是为什么v-for指令中需要添加key，目的是为了把节点保存下来，不用再重新去新建节点了，更加高效的利用dom。</strong></p>
+
       
 
       
@@ -170,16 +192,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/19/virtual%20DOM/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/19/virtual%20DOM/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/06/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">浏览器渲染</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -194,441 +275,67 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-浏览器渲染" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/" class="archive-article-date">
-  	<time datetime="2020-06-11T06:20:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>从url的输入开始，页面获取的过程先是DNS查询，获取到服务器ip，然后建立TCP连接，发出HTTP请求，服务器做出相应，浏览器再根据接收到的资源进行渲染
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Vdom？"><span class="toc-number">1.</span> <span class="toc-text">什么是Vdom？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么需要Vdom？"><span class="toc-number">2.</span> <span class="toc-text">为什么需要Vdom？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vdom就是最好吗？"><span class="toc-number">3.</span> <span class="toc-text">Vdom就是最好吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么Vdom不是最优？"><span class="toc-number">4.</span> <span class="toc-text">为什么Vdom不是最优？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vdom怎么实现？"><span class="toc-number">5.</span> <span class="toc-text">Vdom怎么实现？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#diff算法"><span class="toc-number">6.</span> <span class="toc-text">diff算法</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-
-
-
-
-
-
-
-  
-    <article id="post-webpack优化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/">webpack优化</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2020-05-31T07:59:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>webpack性能的优化包括两部分，一部分是对开发环境性能的优化，另一部分是对生产环境性能的优化。
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-webpack基操" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/">webpack基操</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/" class="archive-article-date">
-  	<time datetime="2020-05-24T12:22:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="event-Event Loop" class="article article-type-event  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/24/Event%20Loop/">Event Loop</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/24/Event%20Loop/" class="archive-article-date">
-  	<time datetime="2020-05-24T05:35:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们知道js是一门单线程的语言，但是在浏览器内核中我们会发现还有些其它的线程（GUI线程、事件触发线程、定时触发线程和异步http请求线程）
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/24/Event%20Loop/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-commonjs、AMD、CMD和ES6" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/">commonjs、AMD、CMD和ES6</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/" class="archive-article-date">
-  	<time datetime="2020-05-23T05:18:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>javascript模块化<br>模块化：将代码集合在一个单独的块中实现特定的功能，当程序需要该功能时，直接引入，不需要时直接删除，不破坏整个系统。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-js的封装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/">js的封装</a>
-    </h1>
-  
-
-        
-        <a href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/" class="archive-article-date">
-  	<time datetime="2020-05-22T03:53:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>面向对象的三大特性：封装、继承、多态<br>但是javascript是一门弱语言，根本不需要多态这么个概念。<br>开始了！开始了！</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/22/js%E7%9A%84%E5%B0%81%E8%A3%85/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-
-
-
-
-
-
   
   
+  
+
+  
+
+  
+
+  
+
+
+
+
+   
+       <section id="comments" class="comments">
+         <style>
+           .comments{margin:30px;padding:10px;background:#fff}
+           @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+         </style>
+         <div id="vcomment" class="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var notify = 'false' == true ? true : false;
+  var verify = 'false' == true ? true : false;
+  new Valine({
+    av: AV,
+    el: '#vcomment',
+    notify: notify,
+    app_id: "Qp7DpOTqjMQBuySuNwe0qmrO-gzGzoHsz",
+    app_key: "eX9WySfoEqHl6vjOjvJ3RXBo",
+    placeholder: "Just go go",
+    avatar: "mm",
+  });
+</script>
+
+     </section>
+   
+
+
+
+
 
 
           </div>
@@ -648,8 +355,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
