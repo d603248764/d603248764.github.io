@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020 | 戴子文的博客</title>
+  <title>实现注册登录 | 戴子文的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="南昌大学2017级，找不到实习的阿贾克斯">
-<meta property="og:type" content="website">
-<meta property="og:title" content="戴子文的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2020/index.html">
+  <meta name="description" content="最近在实现一个项目的注册和登录功能，完整的记录下整个过程遇到的难点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现注册登录">
+<meta property="og:url" content="http://yoursite.com/2020/06/21/%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95/index.html">
 <meta property="og:site_name" content="戴子文的博客">
-<meta property="og:description" content="南昌大学2017级，找不到实习的阿贾克斯">
+<meta property="og:description" content="最近在实现一个项目的注册和登录功能，完整的记录下整个过程遇到的难点">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-21T08:19:35.000Z">
+<meta property="article:modified_time" content="2020-06-21T08:24:23.760Z">
 <meta property="article:tag" content="“前端，js，vue，webpack，http，数据结构与算法”">
 <meta name="twitter:card" content="summary">
   
@@ -136,242 +138,229 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-实现注册登录" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      实现注册登录
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/21/%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95/" class="archive-article-date">
+
+        
+        <a href="/2020/06/21/%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95/" class="archive-article-date">
   	<time datetime="2020-06-21T08:19:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/21/%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95/">实现注册登录</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在实现一个项目的注册和登录功能，完整的记录下整个过程遇到的难点<a id="more"></a></p>
+<p><strong>基本知识储备：nuxt、vuex、nodejs 、koa2、mongoDB、redis、element</strong></p>
+<h2 id="注册页面"><a href="#注册页面" class="headerlink" title="注册页面"></a>注册页面</h2><p>1、利用element框架中form表单这个组件，先在前端实现用户输入合法性的验证</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-form :model=<span class="string">"ruleForm"</span> :rules=<span class="string">"rules"</span> ref=<span class="string">"ruleForm"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"demo-ruleForm"</span>&gt;</span><br><span class="line">          &lt;el-form-item label=<span class="string">"昵称"</span> prop=<span class="string">"username"</span>&gt;</span><br><span class="line">            &lt;el-input v-model=<span class="string">"ruleForm.username"</span> /&gt;</span><br><span class="line">          &lt;<span class="regexp">/el-form-item&gt;       </span></span><br><span class="line"><span class="regexp">&lt;/</span>el-form&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">rules: &#123;</span><br><span class="line">        username: [</span><br><span class="line">          &#123;</span><br><span class="line">            required: <span class="literal">true</span>,</span><br><span class="line">            type: <span class="string">"string"</span>,</span><br><span class="line">            message: <span class="string">"请输入昵称"</span>,</span><br><span class="line">            trigger: <span class="string">"blur"</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        rpwd: [</span><br><span class="line">          &#123;</span><br><span class="line">            required: <span class="literal">true</span>,</span><br><span class="line">            message: <span class="string">"请确认密码"</span>,</span><br><span class="line">            trigger: <span class="string">"blur"</span></span><br><span class="line">          &#125;,</span><br><span class="line">          &#123;</span><br><span class="line">            validator: <span class="function">(<span class="params">rule, value, callback</span>) =&gt;</span> &#123;</span><br><span class="line">              <span class="keyword">if</span> (value !== <span class="keyword">this</span>.ruleForm.pwd) &#123;</span><br><span class="line">                callback(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"两次输入密码不一致"</span>));</span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                callback();</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述中，rules、prop是验证需要的重要属性，rules是制定表单中各个输入框的规则，prop将每个输入框与其对应的规则所绑定。也可以自定义规则，像验证两次密码是否一致。</p>
+<p>表单提交触发验证，当输入合法则向下执行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">submitForm() &#123;</span><br><span class="line">      <span class="keyword">this</span>.$refs[<span class="string">"ruleForm"</span>].validate(<span class="function"><span class="params">valid</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (valid) &#123;</span><br><span class="line">	<span class="comment">//验证成功需要做的</span></span><br><span class="line">          &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>validate函数用来验证，当输入合法，valid为真，可以继续向下执行，验证为假，则会在输入框下显示不合法的输入提示。</p>
+<p>2、表单有个基本雏形，接着需要绑定邮箱的验证（短信验证需要收费，阿里云一条0.045元），获取验证码时需要发送请求给服务器，让服务器来完成验证码的发送。使用axios来发送请求，但是在nuxt中不像传统vue那样可以在main.js进行全局配置，但又不想每个组件都来引入axios，就下载了@nuxtjs/axios，然后在nuxt.config.js中配置（太麻烦了）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plugins: [<span class="string">"~/plugins/axios"</span>],</span><br><span class="line">modules: [<span class="string">"@nuxtjs/axios"</span>]</span><br></pre></td></tr></table></figure>
+<p>再到plugins文件夹下创建axios.js配置请求基本路径、拦截器等等，这样可以在所有组件中可以直接this.$axios发起请求。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params">&#123; store, redirect, req, router, app: &#123; $axios &#125; &#125;</span>) </span>&#123;</span><br><span class="line">  $axios.defaults.baseURL = <span class="string">`http://<span class="subst">$&#123;process.env.HOST || <span class="string">"localhost"</span>&#125;</span>:<span class="subst">$&#123;process.env.PORT || <span class="number">3000</span>&#125;</span>`</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+<p>3、开始得写接口了，先是发送验证码的接口，用nodemailer来发送邮件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">"koa-router"</span>;</span><br><span class="line"><span class="keyword">import</span> nodemailer <span class="keyword">from</span> <span class="string">"nodemailer"</span>;</span><br><span class="line"><span class="keyword">import</span> redis <span class="keyword">from</span> <span class="string">"../utils/redis"</span>;</span><br><span class="line"><span class="keyword">let</span> router = <span class="keyword">new</span> Router(&#123; <span class="attr">prefix</span>: <span class="string">"/user"</span> &#125;);</span><br><span class="line">router.post(<span class="string">"/verify"</span>, <span class="keyword">async</span> ctx =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> email = ctx.request.body.email;</span><br><span class="line">  <span class="keyword">let</span> transporter = nodemailer.createTransport(&#123;</span><br><span class="line">    service: <span class="string">"qq"</span>,</span><br><span class="line">    port: <span class="number">465</span>,</span><br><span class="line">    secure: <span class="literal">true</span>, </span><br><span class="line">    auth: &#123;</span><br><span class="line">      user: <span class="string">"*****@qq.com"</span>, <span class="comment">// 发送方的邮箱</span></span><br><span class="line">      pass: <span class="string">"***"</span> <span class="comment">// smtp 的授权码</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">let</span> code = <span class="built_in">Math</span>.random()</span><br><span class="line">    .toString()</span><br><span class="line">    .slice(<span class="number">2</span>, <span class="number">6</span>);</span><br><span class="line">  <span class="keyword">let</span> mailOptions = &#123;</span><br><span class="line">    <span class="keyword">from</span>: <span class="string">"&lt;603248764@qq.com&gt;"</span>, <span class="comment">// 发送方</span></span><br><span class="line">    to: email, <span class="comment">//接收者邮箱，多个邮箱用逗号间隔</span></span><br><span class="line">    subject: <span class="string">'"ncu"验证'</span>, <span class="comment">// 标题</span></span><br><span class="line">    text: code</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> transporter.sendMail(mailOptions, (error, info) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (error) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">console</span>.log(error);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="comment">// redis.set("code", code);</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.body = &#123;</span><br><span class="line">    code: <span class="number">0</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>客户端发送post请求把邮箱传到服务端，通过nodemailer.createTransport定义好发送端的基本信息，这里使用qq邮箱，其他邮箱配置可以去谷哥下。授权码到qq邮箱的smtp服务去查看。随机生成一个4位数验证码,再定义发送的内容和对象，最终通过sendMail开始发送。</p>
+<p>4、把发送的验证码需要保存起来，选择redis内存数据库，基于内存可想而知它的读写速度是有多快。另外使用起来也特别简单，先在本机上安装好redis数据库，安装ioredis模块配置redis</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//utils/redis.js</span></span><br><span class="line"><span class="keyword">import</span> Redis <span class="keyword">from</span> <span class="string">'ioredis'</span></span><br><span class="line"><span class="keyword">const</span> redis=&#123;</span><br><span class="line">    port:<span class="number">6379</span>,</span><br><span class="line">    host:<span class="string">'127.0.0.1'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> newRedis =<span class="keyword">new</span> Redis(redis)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> newRedis</span><br></pre></td></tr></table></figure>
+<p>再有上面redis.set来保存验证码（键值对的形式，问题来了，如果多个用户同时注册，redis中验证码会被覆盖，后期再针对多用户处理优化）</p>
+<p>5、表单提交（用户注册），发起post请求，把邮箱、验证码、密码等数据传给服务器，密码需要进行加密处理，不然数据库被泄露整个网站用户的密码都被获取了并且密码也不建议明文传输，这里我通过crypto模块对密码进行加密</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crypto.createHash(<span class="string">"md5"</span>).update(<span class="string">"需要加密的内容"</span>).digest(<span class="string">"hex"</span>), <span class="comment">//采用md5算法进行加密（一种hash密码）</span></span><br></pre></td></tr></table></figure>
 
+<p>6、注册接口需要负责把数据存入到数据库中，这里使用mongoDB数据库，同样需要将数据库下载到本地，另外可以在本地再下载个mongoDB Compass（类似navicat）来查看数据库内容。在服务端连上mongoDB也很简单。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mongoose.connect(<span class="string">"mongodb://admin:admin@127.0.0.1:27017/ncu-site"</span>, &#123;</span><br><span class="line">  useNewUrlParser: <span class="literal">true</span>,</span><br><span class="line">  useUnifiedTopology: <span class="literal">true</span>,</span><br><span class="line">  authSource: <span class="string">"admin"</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>连接的是ncu-site集合（也是常常我们说的库，为什么不能像mysql这样叫库、表），admin:admin是我设置的用户名和密码，一般没有设置账户密码的可以不用写接下来是建表（不管了，就按通常的数据库词汇描述），需要引入mongoose模块，使用mongoose模块中的构造函数Schema“建表”，设置数据的类型、是否唯一、是否必须等</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mongoose <span class="keyword">from</span> <span class="string">'mongoose'</span></span><br><span class="line"><span class="keyword">const</span> Schema=mongoose.Schema</span><br><span class="line"><span class="keyword">const</span> UserSchema=<span class="keyword">new</span> Schema(&#123;</span><br><span class="line">    username:&#123;</span><br><span class="line">        type:<span class="built_in">String</span>,</span><br><span class="line">        unique:<span class="literal">true</span>,</span><br><span class="line">        required:<span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    password:&#123;</span><br><span class="line">        type:<span class="built_in">String</span>,</span><br><span class="line">        required:<span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    email:&#123;</span><br><span class="line">        type:<span class="built_in">String</span>,</span><br><span class="line">        required:<span class="literal">true</span>,</span><br><span class="line">        unique:<span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mongoose.model(<span class="string">"User"</span>,UserSchema)</span><br></pre></td></tr></table></figure>
+
+<p>7、注册验证，将表中数据取出和客户端传过来的数据比较，检验是否注册，并检验验证码是否和redis数据库中保存的验证码一致，检验通过再把用户信息保存到刚建的User表中，mongoDB的增删改查和平常我们使用的数据库还是有挺大区别的，但看看文档大概就会了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">router.post(<span class="string">"/signup"</span>, <span class="keyword">async</span> ctx =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; username, password, email, code &#125; = ctx.request.body;</span><br><span class="line">  <span class="keyword">const</span> saveCode = <span class="keyword">await</span> redis.get(<span class="string">"code"</span>);</span><br><span class="line">  <span class="keyword">if</span> (code !== saveCode) &#123;</span><br><span class="line">    ctx.body = &#123;</span><br><span class="line">      code: <span class="number">-1</span>,</span><br><span class="line">      msg: <span class="string">"验证码错误"</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> user = <span class="keyword">await</span> User.find(&#123; username &#125;);</span><br><span class="line">  <span class="keyword">let</span> mail = <span class="keyword">await</span> User.find(&#123; email &#125;);</span><br><span class="line">  <span class="keyword">if</span> (user.length || mail.length) &#123;</span><br><span class="line">    ctx.body = &#123;</span><br><span class="line">      code: <span class="number">-1</span>,</span><br><span class="line">      msg: <span class="string">"用户名或邮箱已被注册"</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> newUser = <span class="keyword">await</span> User.create(&#123; username, password, email &#125;);</span><br><span class="line">  <span class="keyword">if</span> (newUser) &#123;</span><br><span class="line">    ctx.body = &#123;</span><br><span class="line">      code: <span class="number">0</span>,</span><br><span class="line">      msg: <span class="string">"注册成功"</span></span><br><span class="line">    &#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx.body = &#123;</span><br><span class="line">      code: <span class="number">-1</span>,</span><br><span class="line">      msg: <span class="string">"注册失败"</span></span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="登录页面"><a href="#登录页面" class="headerlink" title="登录页面"></a>登录页面</h2><p>登录页面看起来简单，但细节实在是多，弄不好得花费太多精力</p>
+<p>1、登录组件还是使用element，照样发送登录的post请求，问题来了，登录后需要保存用户的登录状态，使用sessionId来完成，这样每次请求都带上cookie，这倒也没什么，但是服务端还得保存session信息，这也没什么，如果用户一旦多起来，负载均衡后，每台服务器还都要保存同样的用户登录信息吗？那就用token，服务端把加密后的token给客户端，客户端每次发出请求时带上token给服务端来验证，解密token来认证用户。</p>
+<p>2、生成token，在登录成功后，我们需要把一个token发送给客户端，使用jwt标准的token，jwt是token的一个标准，分为三段，第一段为header，包含签名算法和令牌类型，第二段payload（载荷）包含要保存的用户信息，第三段signature对前两段进行验证，防止被篡改。生成token我们使用jsonwebtoken来生成</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生成token,第一个参数是载荷，存储在token中的数据，第二个是秘钥，第三个是options，设置token</span></span><br><span class="line">    <span class="keyword">const</span> token = jwt.sign(</span><br><span class="line">      &#123;</span><br><span class="line">        username: result.username,</span><br><span class="line">        _id: result._id</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">"daiziwen"</span>,</span><br><span class="line">      &#123; <span class="attr">expiresIn</span>: <span class="string">"1h"</span> &#125;</span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
+<p>登录成功后把token传给客户端</p>
+<p>3、客户端拿到token之后需要把它保存起来,问题又来了，把token保存在哪？想到没有多少个页面是需要用户认证的，就不使用cookie来占用带宽了（主要是想偷懒直接用loaclStorage的原生接口），sessionStorage只能保存到本次会话，下次又得重新登录，另外还想把用户名保存下来显示，所以就保存在localStorage中了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localStorage.setItem(<span class="string">"token"</span>, data.token);</span><br><span class="line">localStorage.setItem(<span class="string">"username"</span>, data.username);</span><br></pre></td></tr></table></figure>
+
+<p>4、出事了，为了在头部显示登录后的用户名，并且刷新之后不想用户名被刷掉，习惯性引入vuex，在state中设置username：localStorage.getItem(“username”) || “” , 运行！ localStorage is not defined !<br>完了，想起nuxt是服务端渲染，哪里来的浏览器对象呀。想着先判断一下运行环境是否是浏览器端，定义一个username后再传给state。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">getName()&#123;</span><br><span class="line">    <span class="keyword">if</span>（process.client）&#123;</span><br><span class="line">        <span class="keyword">let</span> username=localStorage.getItem(<span class="string">"username"</span>)</span><br><span class="line">        <span class="keyword">return</span> username</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>得！果然没有，应该是异步问题，调来调去还是没有法子。想到Nuxt中有个nuxtServerInit钩子，可是我没用session呀！获取不到用户名。不过也来了灵感，既然我不能在nuxt生命周期中用那我就去vue的生命周期中，然后就在user这个组件中的mountd周期中获取到用户名</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> mounted() &#123;</span><br><span class="line">   <span class="keyword">const</span> &#123; status &#125; = <span class="keyword">await</span> <span class="keyword">this</span>.$axios.get(<span class="string">"/user/getUser"</span>);</span><br><span class="line">   <span class="keyword">if</span> (status === <span class="number">200</span>) &#123;</span><br><span class="line">     <span class="keyword">this</span>.username = localStorage.getItem(<span class="string">"username"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>每次页面一刷新我就获取用户名显示，但问题也来了，每次刷新虽然能获取到登录的用户名，但是会整体渲染完了之后才渲染的用户名，造成用户名“闪现”的问题。（我不行了，下次一定，一定改）</p>
+<p>5、紧接着就是注销了，终于要结束了，清除掉localStorage中的token和username就好了呗，然后再重新刷新过页面，但是为什么loaction.href=’/‘没有重新刷新？导致了用户名还存在的，一定是我的问题，还是用路由链接先跳转回首页再触发loacl.reload()吧。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;nuxt-link @click.native=<span class="string">"quit"</span> to=<span class="string">"/"</span>&gt;注销&lt;<span class="regexp">/nuxt-link&gt;</span></span><br><span class="line"><span class="regexp">quit() &#123;</span></span><br><span class="line"><span class="regexp">      localStorage.removeItem("username");</span></span><br><span class="line"><span class="regexp">      localStorage.removeItem("token");</span></span><br><span class="line"><span class="regexp">      location.reload();</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>整个注册登录的功能就这样实现了，虽然很基本，但还是有挺多细节要注意的，为了服务端渲染使用nuxt还是挺麻烦的。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/21/%E5%AE%9E%E7%8E%B0%E6%B3%A8%E5%86%8C%E7%99%BB%E5%BD%95/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/19/VertualDOM/" class="archive-article-date">
-  	<time datetime="2020-06-19T08:15:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-19</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/06/19/VertualDOM/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">VertualDOM</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/19/VertualDOM/">VertualDOM</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#注册页面"><span class="toc-number">1.</span> <span class="toc-text">注册页面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#登录页面"><span class="toc-number">2.</span> <span class="toc-text">登录页面</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/19/Vertual%20DOM/" class="archive-article-date">
-  	<time datetime="2020-06-19T08:15:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-19</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/19/Vertual%20DOM/">Vertual DOM</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/" class="archive-article-date">
-  	<time datetime="2020-06-11T06:20:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93/">浏览器渲染</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/" class="archive-article-date">
-  	<time datetime="2020-05-31T07:59:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/31/webpack%E4%BC%98%E5%8C%96/">webpack优化</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/" class="archive-article-date">
-  	<time datetime="2020-05-24T12:22:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/24/webpack%E5%9F%BA%E6%93%8D/">webpack基操</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-event">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/24/Event%20Loop/" class="archive-article-date">
-  	<time datetime="2020-05-24T05:35:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/24/Event%20Loop/">Event Loop</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/" class="archive-article-date">
-  	<time datetime="2020-05-23T05:18:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/23/commonjs%E3%80%81AMD%E3%80%81CMD%E5%92%8CES6/">commonjs、AMD、CMD和ES6</a>
-    </h1>
-  
+   
+       <section id="comments" class="comments">
+         <style>
+           .comments{margin:30px;padding:10px;background:#fff}
+           @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+         </style>
+         <div id="vcomment" class="comment"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var notify = 'false' == true ? true : false;
+  var verify = 'false' == true ? true : false;
+  new Valine({
+    av: AV,
+    el: '#vcomment',
+    notify: notify,
+    app_id: "Qp7DpOTqjMQBuySuNwe0qmrO-gzGzoHsz",
+    app_key: "eX9WySfoEqHl6vjOjvJ3RXBo",
+    placeholder: "Just go go",
+    avatar: "mm",
+  });
+</script>
 
-        <div class="article-info info-on-right">
-          
-          
+     </section>
+   
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2020/page/2/">2</a><a class="extend next" rel="next" href="/archives/2020/page/2/">Next &amp;raquo;</a>
-    </nav>
-  
+
+
 
 
           </div>
@@ -392,8 +381,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
